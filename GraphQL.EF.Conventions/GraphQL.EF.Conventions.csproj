@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

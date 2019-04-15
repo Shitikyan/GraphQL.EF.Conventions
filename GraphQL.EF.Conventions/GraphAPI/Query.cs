@@ -23,5 +23,15 @@ namespace GraphQL.EF.Conventions.GraphAPI
         {
             return Mapper.Map<IEnumerable<Schema.Movie>>(await movieRepository.GetMovies());
         }
+
+        public async Task<IEnumerable<Schema.Project>> Projects([Inject] IProjectRepository projectRepository)
+        {
+            return Mapper.Map<IEnumerable<Schema.Project>>(await projectRepository.GetProjects());
+        }
+
+        public async Task<IEnumerable<Schema.Datasource>> Datasources([Inject] IDatasourceRepository datasourceRepository)
+        {
+            return Mapper.Map<IEnumerable<Schema.Datasource>>(await datasourceRepository.GetDatasources());
+        }
     }
 }

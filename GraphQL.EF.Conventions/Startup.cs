@@ -26,9 +26,13 @@ namespace GraphQL.EF.Conventions
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<ActorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ActorDBConnection")));
             services.AddDbContext<MovieDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieDBConnection")));
+            services.AddDbContext<ProjectDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProjectDBConnection")));
+            services.AddDbContext<MasterDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MasterDBConnection")));
 
             services.AddScoped<IActorRepository, ActorRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IDatasourceRepository, DatasourceRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
 
             services.AddSingleton(provider => new GraphQLEngine()
                 .WithFieldResolutionStrategy(FieldResolutionStrategy.Normal)
