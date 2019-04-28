@@ -17,21 +17,31 @@ namespace GraphQL.EF.Conventions.Repositories
 
     public class DatasourceRepository : IDatasourceRepository
     {
-        private readonly ProjectDbContext _context;
+        private readonly IDbContextProvider<int, ProjectDbContext> _contextProvider;
 
-        public DatasourceRepository(ProjectDbContext context)
+        public DatasourceRepository(IDbContextProvider<int, ProjectDbContext> contextProvider)
         {
-            _context = context;
+            _contextProvider = contextProvider;
         }
 
         public async Task<ILookup<int, Datasource>> GetDatasourcesPerProject(IEnumerable<int> projectIds)
         {
-            return (await _context.Datasource.Where(x => projectIds.Contains(x.ProjectId)).ToListAsync()).ToLookup(x => x.ProjectId);
+            List<Datasource> datasources = new List<Datasource>();
+
+            foreach (var projectId in projectIds.Distinct())
+            {
+                var context = _contextProvider.GetContext(projectId);
+                var result = await context.Datasource.Where(x => projectId == x.ProjectId).ToListAsync();
+                datasources.AddRange(result);
+            }
+
+            return datasources.ToLookup(x => x.ProjectId);
         }
 
         public async Task<IEnumerable<Datasource>> GetDatasources()
         {
-            return await _context.Datasource.AsNoTracking().ToListAsync();
+            var context = _contextProvider.Contexts.FirstOrDefault();
+            return await context.Value?.Datasource.AsNoTracking().ToListAsync();
         }
     }
 }

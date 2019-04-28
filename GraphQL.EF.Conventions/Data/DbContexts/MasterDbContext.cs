@@ -20,9 +20,7 @@ namespace GraphQL.EF.Conventions.Data.DbContexts
         {
             modelBuilder.Entity<Project>().HasData(
                 new Project { Id = 1, Name = "Project1" },
-                new Project { Id = 2, Name = "Project2" },
-                new Project { Id = 3, Name = "Project3" },
-                new Project { Id = 4, Name = "Project4" });
+                new Project { Id = 2, Name = "Project2" });
 
             base.OnModelCreating(modelBuilder);
         }
